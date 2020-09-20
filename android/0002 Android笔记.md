@@ -1,3 +1,6 @@
+# Android源码
+- github镜像: https://github.com/aosp-mirror
+- xref: http://androidxref.com/
 
 # SELINUX
 + class文件定义在system/sepolicy/secruity_classes和access_vectors：

@@ -143,9 +143,7 @@ private static X509Certificate[][] verify(
      ALOGW("Zip: %" PRId64 " extraneous bytes at the end of the central directory",
            static_cast<int64_t>(file_length - calculated_length));
 -    return kInvalidFile;
-+    //[FEATURE]-Del-BEGIN by (wangyingdong@paxsz.com), 2020/07/08
 +    //return kInvalidFile;
-+    //[FEATURE]-Del-END by (wangyingdong@paxsz.com), 2020/07/08
    }
  
    /*
@@ -169,11 +167,9 @@ private static X509Certificate[][] verify(
          // EoCD found
          buf.position(eocdOffsetInBuf);
 +        
-+        //paxsz@20200708: {
 +        if (buf.capacity() - eocdOffsetInBuf == (PAX_SIGNATURE_SIZE + ZIP_EOCD_REC_MIN_SIZE)) {
 +            buf.limit(eocdOffsetInBuf + ZIP_EOCD_REC_MIN_SIZE);
 +        }
-+        // } paxsz
          ByteBuffer eocd = buf.slice();
          eocd.order(ByteOrder.LITTLE_ENDIAN);
          return Pair.create(eocd, bufOffsetInFile + eocdOffsetInBuf);
@@ -182,11 +178,9 @@ private static X509Certificate[][] verify(
                      return eocdStartPos;
                  }
 +                
-+                //paxsz@20200708: {
 +                else if (expectedCommentLength == PAX_SIGNATURE_SIZE) {
 +                    return eocdStartPos;
 +                }
-+                // } paxsz
              }
          }
 ```
